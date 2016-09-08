@@ -1,0 +1,73 @@
+﻿@model IEnumerable<MvcMovie.Models.Movie>
+
+@*This @model directive allows you to access the list of movies that the controller passed to the view by using a Model object  that's strongly typed*@
+@*https://www.asp.net/mvc/overview/getting-started/introduction/accessing-your-models-data-from-a-controller*@
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+
+    @*The following Html BeginForm Helper creates an opening <form> tag and it posts to itself when someone hits the Filter button*@
+    
+    @using (Html.BeginForm("Index", "Movies", FormMethod.Get)) //This Overload specifies the POST request should add the search info to the URL and that it should be routed to the HttpGet version of index method
+    {
+    <p>
+        Genre: @Html.DropDownList("movieGenre", "All")
+        Title: @Html.TextBox("SearchString") <br /><br />
+        <input type="submit" value="Filter" />
+    </p>
+    }
+    
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReleaseDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Genre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Rating)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReleaseDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Genre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Price)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Rating)
+        </td>
+
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |       @*The Html object is a helper that's exposed using a property on the System.Web.Mvc.WebViewPage base class*@
+            @Html.ActionLink("Details", "Details", new { id=item.ID }) |   @*The second argument is the name of the action method to invoke in MoviesController*@
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID })       @*The final argument is an anonymous object that generates the route data*@
+        </td>
+    </tr>                                       
+}
+
+</table>
